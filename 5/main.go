@@ -34,11 +34,7 @@ func ProcessOpcodes(ix int, output *int, inputOpcodes []int) int {
 		}
 		panic("no current output value")
 	}
-	if output != nil && *output != 0 {
-		fmt.Printf("Invalid output at operation before index %d", ix)
-		panic("Failure of output")
-	}
-	return ProcessOpcodes(ProcessOpcode(ix, inputOpcodes))
+	return ProcessOpcodes(ProcessOpcode(ix, output, inputOpcodes))
 }
 
 func getThreeArgVal(ix int, inputOpcodes []int) (int, int, int) {
@@ -54,8 +50,7 @@ func getThreeArgVal(ix int, inputOpcodes []int) (int, int, int) {
 	return position, first, second
 }
 
-func ProcessOpcode(ix int, inputOpcodes []int) (int, *int, []int) {
-	fmt.Printf("Process codes %d at index %d\n", inputOpcodes, ix)
+func ProcessOpcode(ix int, output *int, inputOpcodes []int) (int, *int, []int) {
 	if util.Digit(inputOpcodes[ix], 1) == 1 {
 		modifyIX, a, b := getThreeArgVal(ix, inputOpcodes)
 		inputOpcodes[modifyIX] = a + b
@@ -76,25 +71,24 @@ func ProcessOpcode(ix int, inputOpcodes []int) (int, *int, []int) {
 		return ix + 2, nil, inputOpcodes
 	}
 	if util.Digit(inputOpcodes[ix], 1) == 4 {
-		output := &inputOpcodes[inputOpcodes[ix+1]]
 		if util.Digit(inputOpcodes[ix], 3) == 1 {
-			output = &inputOpcodes[ix+1]
+			return ix + 2, &inputOpcodes[ix+1], inputOpcodes
 		}
-		return ix + 2, output, inputOpcodes
+		return ix + 2, &inputOpcodes[inputOpcodes[ix+1]], inputOpcodes
 	}
 	if util.Digit(inputOpcodes[ix], 1) == 5 {
 		_, a, b := getThreeArgVal(ix, inputOpcodes)
 		if a != 0 {
-			return b, nil, inputOpcodes
+			return b, output, inputOpcodes
 		}
-		return ix + 3, nil, inputOpcodes
+		return ix + 3, output, inputOpcodes
 	}
 	if util.Digit(inputOpcodes[ix], 1) == 6 {
 		_, a, b := getThreeArgVal(ix, inputOpcodes)
 		if a == 0 {
-			return b, nil, inputOpcodes
+			return b, output, inputOpcodes
 		}
-		return ix + 3, nil, inputOpcodes
+		return ix + 3, output, inputOpcodes
 	}
 	if util.Digit(inputOpcodes[ix], 1) == 7 {
 		modifyIX, a, b := getThreeArgVal(ix, inputOpcodes)
