@@ -3,10 +3,10 @@ package main
 import (
 	"errors"
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/jmcshane/advent-of-code/pkg/input"
+	"github.com/jmcshane/advent-of-code/pkg/util"
 )
 
 func main() {
@@ -15,15 +15,7 @@ func main() {
 		panic(err)
 	}
 	prog := strings.Split(content, ",")
-	var inputProg = []int{}
-
-	for _, i := range prog {
-		j, err := strconv.Atoi(i)
-		if err != nil {
-			panic(err)
-		}
-		inputProg = append(inputProg, j)
-	}
+	inputProg := util.ConvertInputArray(prog)
 	//Part 1
 	// outputProg := ProcessProg(ApplyInputs(12, 2, inputProg))
 	// fmt.Printf("The first arg is %d", outputProg[0])

@@ -3,15 +3,13 @@ package main
 import (
 	"fmt"
 	"math"
+
+	"github.com/jmcshane/advent-of-code/pkg/util"
 )
 
 const (
 	start int = 134792
 	end   int = 675810
-	// start int = 134772
-	// end   int = 134778
-	// start int = 111121
-	// end   int = 111123
 )
 
 func main() {
@@ -27,7 +25,7 @@ func main() {
 func checkValue(value int) bool {
 	digits := []int{}
 	for i := 1; math.Pow(10, float64(i-1)) < float64(value); i++ {
-		digits = append(digits, digit(value, i))
+		digits = append(digits, util.Digit(value, i))
 	}
 	foundDup := false
 	for ix := range digits {
@@ -46,9 +44,4 @@ func checkValue(value int) bool {
 		}
 	}
 	return foundDup
-}
-
-func digit(num, place int) int {
-	r := num % int(math.Pow(10, float64(place)))
-	return r / int(math.Pow(10, float64(place-1)))
 }
